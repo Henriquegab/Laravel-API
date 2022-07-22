@@ -32,11 +32,12 @@ class AlunoController extends Controller
     public function store(StoreAlunoRequest $request)
     {
 
+        // dd($request->validated());
 
 
         Aluno::create($request->validated());
 
-        return response()->json('ok', 201);
+        return response()->json('created', 201);
     }
 
     /**
@@ -59,9 +60,12 @@ class AlunoController extends Controller
      * @param  \App\Models\Aluno  $aluno
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateAlunoRequest $request, Aluno $aluno)
+    public function update(UpdateAlunoRequest $request, $id)
     {
-        //
+       $aluno =  Aluno::findOrFail($id);
+       $aluno->update($request->validated());
+
+       return response()->json('edited', 204);
     }
 
     /**
@@ -70,8 +74,11 @@ class AlunoController extends Controller
      * @param  \App\Models\Aluno  $aluno
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Aluno $aluno)
+    public function destroy($id)
     {
-        //
+        $aluno =  Aluno::findOrFail($id);
+        $aluno->delete();
+
+       return response()->json('deleted', 200);
     }
 }
